@@ -1,15 +1,12 @@
-# Eliza 🤖 on Cosmos Interchain - using AKASH powered ressources
+# Eliza 🤖 on Cosmos Interchain - Using AKASH Powered Resources
 
 <div align="center">
   <img src="./docs/static/img/eliza_banner.jpg" alt="Eliza Banner" width="60%" />
 </div>
 
 <div align="center">
-
-📖 [Documentation](https://elizaos.github.io/eliza/) | 🎯 [Examples](https://github.com/thejoven/awesome-eliza)
-
+  📖 [Documentation](https://elizaos.github.io/eliza/) | 🎯 [Examples](https://github.com/thejoven/awesome-eliza)
 </div>
-
 
 ## 🚩 Overview
 
@@ -19,250 +16,216 @@
 
 ## ✨ Features
 
-- 🛠️ Full-featured Discord, Twitter and Telegram connectors
-- 🔗 Support for every model (Llama, Grok, OpenAI, Anthropic, etc.)
+- 🛠️ Full-featured connectors for Discord, Twitter, and Telegram
+- 🔗 Supports various models (Llama, Grok, OpenAI, Anthropic, etc.)
 - 👥 Multi-agent and room support
-- 📚 Easily ingest and interact with your documents
+- 📚 Easy document ingestion and interaction
 - 💾 Retrievable memory and document store
-- 🚀 Highly extensible - create your own actions and clients
-- ☁️ Supports many models (local Llama, OpenAI, Anthropic, Groq, etc.)
-- 📦 Just works!
+- 🚀 High extensibility for custom actions and clients
+- ☁️ Compatible with many models (local Llama, OpenAI, Anthropic, Groq, etc.)
+- 📦 Ready to use!
 
+## Important Notice
 
-# This guide wants to empower communities to run their own community bots with ease, but would be a nasty plague in the hand of scammers
-So: Please share this guide only with teams, devs, communities and builder you trust and have faith in.
+This guide is designed to help communities run their own bots effortlessly. However, it can be misused by scammers. Please share this guide only with trusted teams, developers, communities, and builders.
 
-Scammers killing the spaces, making people leaving and disappoining the ecosystem--
-Dear Scammers, you ngmi, get a real life and stop abusing people-- talented people don't need to scam, but you would be better of shaming yourself
+Scammers harm the ecosystem by driving people away. To scammers: you won't succeed. Get a real life and stop exploiting others. Talented individuals don't need to scam. It's time to reflect and change.
 
 ### Prerequisites
 
 - [Python 2.7+](https://www.python.org/downloads/)
 - [Node.js 23+](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- nvm use v23.3.0 or nvm alias default v23.3.0
+- Use `nvm` to set Node.js version: `nvm use v23.3.0` or `nvm alias default v23.3.0`
 - [pnpm](https://pnpm.io/installation)
-- 
 
+### Creating the File Structure
 
-
-### Create filestructure
-
-
+```bash
 git clone https://github.com/elizaos/eliza.git
-
-``
-
-### Edit the .env file. This file holds all API Keys, Seedphrases and Twitter/Discord/Telegram credentials ... don´t share it
-
-Copy .env.example to .env and fill in the appropriate values. Fills the file with default values first
-
-```
-cp .env.example .env
 ```
 
-to edit the file:
-nano .env 
-    nano commands: CTRL+X Save and Exit
-                    CTRL+W Search
-                    
+### First Build Initialization
 
-### Get Akash API KEY
-Go to https://chatapi.akash.network/ and Generate a API KEY. Question How to use the service? Taking Cosmos into AI age
-The API is free to use, and you don't need to re-confirm your email... but it is rate-limited on a per-hour-basis. This limit is set way igher than casual users will ever need it, only from training purposes you will have to chunk the tasks or run a dedicated environment as described below
+1. Install dependencies and build:
 
-now edit the .env and add these keys:
+   ```bash
+   pnpm i
+   pnpm build
+      ```
 
-```bash
-nano .env
-```
-Search for "AKASH"... CTRL + W
-Enter your key
-```bash
-AKASH_CHAT_API_KEY=sk-1agDViherhwqzr3r # REPLACE YOUR KEY HERE
-```
-Save with CTRL + X
+2. To keep the instance running after logout, use `pm2`:
 
+   ```bash
+   npm install pm2
+   ```
 
-exit & save
+3. Start the process with `pm2`:
 
-### Edit your character file
+   ```bash
+   pm2 start pnpm --name eliza -- start -- --character=./eliza/characters/avatar.character.json
+   ```
 
-head into the character folder:
-```
-cd characters
-```
-create a template of c3po.character.json to use as a template for your own model:
-```
-cp c3po.character.json avatar.character.json
-nano avatar.character.json
-```
-The structure is structured like this:
-bio:  The self-definition passed to the LLM (sub-concisousness so to say)
-lore: Examples of expression, used to generate the style of texting
-knowledge: These are memories at genesis, so if you want your bot to know your website, discord url, etc.. add it here
-
-The header should be set like this, so fill in the modelProvider, in our case this should be:
-```
- "modelProvider": "akash_chat_api",
-```
-"clients" should be left empty for now, as we need to create Bot Tokens for them to work properly. You add "telegram","discord","twitter" later in a comma seperated way
-
-```
-{
-    "name": "Avatar",
-    "clients": ["telegram","discord","twitter"],
-    "modelProvider": "akash_chat_api",
-    "settings": {
-        "secrets": {},
-        "voice": {
-            "model": "en_US-male-medium"
-```
-
-  
+   - **PM2 Commands:**
+     - `pm2 start eliza`
+     - `pm2 stop eliza`
+     - `pm2 log`
+     - `pm2 status`
+     - `pm2 save`
 
 
-### First build initialization
+### Edit the `.env` File
 
-```bash
-pnpm i
-pnpm build
-pnpm start --characters="~./eliza/characters/avatar.character.json"`
-```
-This should start a running instance
+The `.env` file contains all API keys, seed phrases, and credentials for Twitter, Discord, and Telegram. Do not share this file.
+Best to use is VS Code, but you can also use any text-based editor or even the commandline editor
 
-- To keep the instance running after logoff you need process manager pm2:
--```
--  npm install pm2
--```
+1. Copy the example file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit the file using `nano`:
+
+   ```bash
+   nano .env
+   ```
+
+   - **Nano Commands:**
+     - `CTRL+X`: Save and Exit
+     - `CTRL+W`: Search
+
+### Obtain Akash API Key
+
+Visit [Akash API](https://chatapi.akash.network/) to generate an API key. The service is free but rate-limited. For extensive use, consider setting up a dedicated environment.
+
+1. Edit the `.env` file to add your API key:
+
+   ```bash
+   nano .env
+   ```
+
+   Search for "AKASH" using `CTRL+W` and enter your key:
+
+   ```bash
+   AKASH_CHAT_API_KEY=sk-1agDViherhwqzr3r # REPLACE YOUR KEY HERE
+   ```
 
 
-To start the process via pm2
+### Edit Your Character File
 
-```
-pm2 start pnpm --name eliza -- start -- --character=./eliza/characters/avatar.character.json
+1. Navigate to the character folder:
 
-```
+   ```bash
+   cd characters
+   ```
 
-This creates a process, check the status or end the daemon. use pm2 save to save the process
-```
--     pm2 start eliza
--     pm2 stop eliza
--     pm2 log
--     pm2 status
--     pm2 start "pnpm" -- start --character="/yourpath/characters/avatar.character.json" to create pm2 entry
-      pm2 save
-```
+2. Use `c3po.character.json` as a template:
+
+   ```bash
+   cp c3po.character.json avatar.character.json
+   nano avatar.character.json
+   ```
+
+   - **Structure:**
+     - **Bio:** Self-definition for the LLM
+     - **Lore:** Text style examples
+     - **Knowledge:** Initial memories (e.g., website, Discord URL)
+
+3. Set the attribute "modelProvider" to use the AKASH Chat API :
+
+   ```json
+   "modelProvider": "akash_chat_api",
+   ```
+
+
 
 
 ### First Chat
+Start the framework
 
-Open a new window, run pnpm start:client
-Head to the website displayed there
+```bash
+pnpm start --characters="./eliza/characters/avatar.character.json"
+```bash
 
+And open a new window and run:
+
+```bash
+pnpm start:client
+```
+
+Visit the displayed website on your localhost using a web browser.
 
 ### Telegram Connection
-https://telegram.me/BotFather
-actually pretty easy, copy&paste your bot token into the .env
 
-add "telegram" to your characterfiles header:
+1. Use [BotFather](https://telegram.me/BotFather) to create a bot.
+2. Add your bot token to the `.env` file.
+3. Update your character file header:
 
-Example:
-```
-{
-    "name": "Bud",
-    "plugins": ["@elizaos/plugin-web-search"],
-    "clients": ["telegram"],
-    "modelProvider": "akash_chat_api",
-    "settings": {
-        },
-        "voice": {
-            "model": "en_US-male-medium"
-        }
-    },
-```
+   ```json
+   "clients": ["telegram"],
+   ```
 
-beware: you need to leave a space behind the ":" after "clients": ---> 
-so this is correct:  
-```"clients": ["telegram"],```
-but not ```"clients":["telegram"],```
-the full set would look like: ["telegram","twitter","discord"],
-
-damn syntax handlers...;)
+   Ensure a space after the colon: `"clients": ["telegram"],`.
 
 ### Discord Connection
-Head to and create a Bot Token
-https://discord.com/developers
 
-Somehow you need to "reset" your token, otherwise you wont see the necessary token (not just numbers, looks like this: TMzMDEzMzE4Njc.....
-Then you can use the invite link generated during startup to add them to your server
+1. Create a bot token at [Discord Developers](https://discord.com/developers).
+2. Reset your token if necessary.
+3. Use the invite link from startup to add the bot to your server.
+4. Set bot permission intentions to the right.
+5. Enter your Application ID and API Token as shown.
 
-You need to set bot permission intentions all to the right, that are disbled by default
-then enter your Application ID and the API Token like shown below:
-
-## Advanced Character settings:
+## Advanced Character Settings
 
 Example:
-```
+
+```json
 {
-    "name": "Bud",
-    "plugins": ["@elizaos/plugin-web-search"],
-    "clients": ["discord"],
-    "modelProvider": "akash_chat_api",
-    "settings": {
-        "secrets": {
-            "DISCORD_APPLICATION_ID": "1330176587323924",
-            "DISCORD_API_TOKEN": "MTMzMDEzMzE4NjczNnewf9843f984r98E_9dK3zQp577QWKjS4i-wz78"
-        },
-        "voice": {
-            "model": "en_US-male-medium"
-        }
+  "name": "Bud",
+  "plugins": ["web-search"],
+  "clients": ["discord"],
+  "modelProvider": "akash_chat_api",
+  "settings": {
+    "secrets": {
+      "DISCORD_APPLICATION_ID": "123456789",
+      "DISCORD_API_TOKEN": "MTMzMDEzMzE4NXXXXXXXXXXXXXXXK3zQp577QWKjS4i-wz78"
     },
+    "voice": {
+      "model": "en_US-male-medium"
+    }
+  },
 ```
 
- ```"secrets"``` : This overrides the values given in .env for that specific character. So you can give characters unique tg handles or discord id's
- 
-```"plugins"``` to embed plugins from the /packages folder. remember to run "npm add eliaos@your-new-lugin" from the main directory to fetch dependencies first
+- **Secrets:** Override values in `.env` for a specific character.
+- **Plugins:** Embed plugins from the `/packages` folder.
 
-Best Plugins right now are
--web-search (Gives the ability to handle an online search if the model requires more information
--dexscreener-API
--coingecko-API
--image-generation
--video-generation
--speech-synthesis (can join discord voice channels)
--twitter (no API access needed) 
--discord
--telegram
--whatsapp
+### Accessing the Database
 
-
-### Accessing the Database:
-```
+```bash
 cd /agent/data
 ```
-here you'll find the db.sqlite file
 
-get yourself sqlitebrowser and run:
-```
+Find the `db.sqlite` file and use `sqlitebrowser` to access it:
+
+```bash
 sqlitebrowser db.sqlite
 ```
-check the "memory" table...
 
+Check the "memory" table.
 
-## Advanced Vector Indexing Database:
-This is not necessary for character imitating models, but is useful for big workloads and long-trained models:
-You can upscale your Database in CPU and HDD with growing demand later easily
+## Advanced Vector Indexing Database
 
-Deploy an AKASh Postgres Vector enabled Database with this YAML Sheet:
-https://console.akash.network/
+For big workloads and long-trained models, consider upscaling your database.
 
-```
+Deploy an AKASH Postgres Vector-enabled Database using this YAML sheet:
+
+```yml
 ---
 version: "2.0"
 
 services:
   postgres:
-    image: ankane/pgvector 
+    image: ankane/pgvector
     expose:
       - port: 5432
         to:
@@ -292,7 +255,6 @@ profiles:
             attributes:
               persistent: true
               class: beta3
-          
   placement:
     akash:
       attributes:
@@ -301,203 +263,40 @@ profiles:
         anyOf:
           - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
       pricing:
-        postgres: 
+        postgres:
           denom: uakt
           amount: 10000
-
 deployment:
   postgres:
     akash:
       profile: postgres
-      count: 1 
+      count: 1
 ```
-change username and password and
-adjust and scale the cpu, hdd to your need
 
-after deployment, add the login to the .env file:
-```
+Adjust the CPU, HDD, and other settings according to your needs.
+
+After deployment, add the login to the `.env` file:
+
+```bash
 POSTGRES_URL=postgresql://eliza:yourpassword@provider.akash.ddns.net:yourportassigned/eliza_db
 ```
 
-use pgadmin4 to access and backup the database via webbrowser
+Use `pgadmin4` to access and backup the database via web browser.
 
-### Run a AKASH dedicated Engine
-If you get blocked by the akash chat api because you consume too much computing power, condsider to run a dedicated instance temporarly:
+## Run a Dedicated AKASH Engine
 
-Use this yaml to deploy:
-```
----
-version: "2.0"
-services:
-  ollama:
-    ############################
-    image: ollama/ollama:0.3.6
-    ############################
-    #Always check https://hub.docker.com/r/ollama/ollama/tags for the latest version tag!
-    expose:
-      - port: 11434
-        as: 11434
-        to:
-          - global: true
-    env:
-    #######################
-      - MODEL=llama3.1:405b 
-    #######################
-    #Supports any model from : https://ollama.com/library
-    command:
-      - /bin/sh
-      - -c
-      - |
-        ollama serve & 
-        while ! ollama pull ${MODEL}; do
-          echo "Waiting for ollama pull to succeed..."
-          sleep 2.5
-        done
-        ollama list
-        pkill ollama
-        ollama serve
-profiles:
-  compute:
-    ollama:
-      resources:
-        cpu:
-          units: 8
-        #Higher is better for AI! Be sure to change thread setting in app.
-        memory:
-          size: 28Gi
-        #7B requires about 4.5GB of free RAM
-        #13B requires about 12GB free
-        #30B requires about 20GB free // 24 not enough
-        storage:
-          size: 100Gi
-        #Bigger models may require more storage.
-        #Increase as required.
-        gpu:
-          units: 1
-          attributes:
-            vendor:
-              nvidia: 
-  placement:
-    akash:
-      #######################################################
-      #Keep this section to deploy on trusted providers
-      signedBy:
-        anyOf:
-          - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
-      #######################################################
-      #Remove this section to deploy on untrusted providers
-      #Beware* You may have deployment, security, or other issues on untrusted providers
-      #https://docs.akash.network/providers/akash-audited-attributes
-      pricing:
-        ollama:
-          denom: uakt
-          amount: 10000
-deployment:
-  ollama:
-    akash:
-      profile: ollama
-      count: 1
-```
-down-adjust some values, this version costs lot of $$ a month..
-You can close your deploy anytime and get your remaining depost back, so if you need it just for 1-2h its pretty cheap though
-so add these lines into your .env:
-
-## Ollama Configuration
-```
-OLLAMA_SERVER_URL=http://your-assgined-server:your-mapped-port               # Default: localhost:11434
-OLLAMA_MODEL=llama3.1:405b
-OLLAMA_EMBEDDING_MODEL=mxbai-embed-large         # Default: mxbai-embed-large
-SMALL_OLLAMA_MODEL=llama3.1:405b             # Default: llama3.2
-MEDIUM_OLLAMA_MODEL=llama3.1:405b          # Default: hermes3
-LARGE_OLLAMA_MODEL=llama3.1:405b   
-```
-you need to set the model to llama3.1:405b for small, medium, and large
-also change the given modelprovider in the characterfile from "akash_chat_api" to "ollama"
+For temporary use, consider running a dedicated AKASH engine.
 
 
-## Get the big thing: 
-If it comes to 3d realtime generation, speech synthesis and live Video modelling, maybe this one suits your needs:
-```
----
-version: "2.0"
-services:
-  vllm:
-    image: vllm/vllm-openai:v0.6.2@sha256:730ef3d3c17a217b34cfdbfd99be80b3f459e37ef2fc0c5c43ba70752dad08ae
-    expose:
-      - port: 8000
-        as: 8000
-        to:
-          - global: true
-    command:
-      - bash
-      - "-c"
-    args:
-      - >- 
-        vllm serve hugging-quants/Meta-Llama-3.1-405B-Instruct-AWQ-INT4 
-        --tensor-parallel-size 8 
-        --speculative-model meta-llama/Meta-Llama-3.1-8B-Instruct 
-        --num-speculative-tokens 5 
-        --use-v2-block-manager
-    env:
-      - "HF_TOKEN=" # Hugging Face API token required for Meta-Llama Models
-      #- "NCCL_DEBUG=INFO" # Uncomment to enable NCCL debugging
-    params:
-      storage:
-        shm:
-          mount: /dev/shm
-        data:
-          mount: /root/.cache
-          readOnly: false
-profiles:
-  compute:
-    vllm:
-      resources:
-        cpu:
-          units: 16
-        memory:
-          size: 128Gi
-        storage:
-          - size: 100Gi
-          - name: data
-            size: 1000Gi
-            attributes:
-              persistent: true
-              class: beta3
-          - name: shm
-            size: 10Gi
-            attributes:
-              class: ram
-              persistent: false
-        gpu:
-          units: 8
-          attributes:
-            vendor:
-              nvidia:
-                - model: h100
-                  ram: 80Gi
-                - model: a100
-                  ram: 80Gi
-  placement:
-    dcloud:
-      pricing:
-        vllm:
-          denom: uakt
-          amount: 1000000
-deployment:
-  vllm:
-    dcloud:
-      profile: vllm
-      count: 1
-```
+Llama 3.1 70B 1.65$ per hour ((2x A100) ----------
+LLama 3.1 405B 8$ per hour   (8x A100)
+
+Use this YAML to deploy:
 
 
-# Cosmos Transaction Module:
+## Cosmos Transaction Module
 
-for now its working solely for tx bank transfers, but with SKIP API it will be able to IBC, trade and stake tokens
-more to come soon....
-
-
-
+For now, it only supports tx bank transfers. With SKIP API, it will be able to IBC, trade, and stake tokens.
 
 - [Discord](https://discord.gg/ai16z). Best for: sharing your applications and hanging out with the community.
 
