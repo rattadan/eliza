@@ -1,4 +1,4 @@
-# Eliza 🤖 on Cosmos Interchain - Using AKASH Powered Resources
+# Eliza 🤖 for Communities
 
 <div align="center">
   <img src="./docs/static/img/eliza_banner.jpg" alt="Eliza Banner" width="60%" />
@@ -27,9 +27,7 @@
 
 ## Important Notice
 
-This guide is designed to help communities run their own bots effortlessly. However, it can be misused by scammers. Please share this guide only with trusted teams, developers, communities, and builders.
-
-Scammers harm the ecosystem by driving people away. To scammers: you won't succeed. Get a real life and stop exploiting others. Talented individuals don't need to scam. It's time to reflect and change.
+This guide is designed to help communities run their own bots effortlessly.
 
 ### Prerequisites
 
@@ -94,22 +92,17 @@ Best to use is VS Code, but you can also use any text-based editor or even the c
      - `CTRL+X`: Save and Exit
      - `CTRL+W`: Search
 
-### Obtain Akash API Key
+### Obtain  API Key
 
-Visit [Akash API](https://chatapi.akash.network/) to generate an API key. The service is free but rate-limited. For extensive use, consider setting up a dedicated environment.
+
 
 1. Edit the `.env` file to add your API key:
 
    ```bash
    nano .env
    ```
-
-   Search for "AKASH" using `CTRL+W` and enter your key:
-
-   ```bash
-   AKASH_CHAT_API_KEY=sk-1agDViherhwqzr3r # REPLACE YOUR KEY HERE
-   ```
-
+Insert your API KEY into the according line
+  
 
 ### Edit Your Character File
 
@@ -211,94 +204,6 @@ Find the `db.sqlite` file and use `sqlitebrowser` to access it:
 sqlitebrowser db.sqlite
 ```
 
-Check the "memory" table.
-
-## Advanced Vector Indexing Database
-
-For big workloads and long-trained models, consider upscaling your database.
-
-Deploy an AKASH Postgres Vector-enabled Database using this YAML sheet:
-
-```yml
----
-version: "2.0"
-
-services:
-  postgres:
-    image: ankane/pgvector
-    expose:
-      - port: 5432
-        to:
-          - global: true
-    env:
-      - PGDATA=/var/lib/postgresql/data/pgdata
-      - "POSTGRES_USER=admin"
-      - "POSTGRES_PASSWORD=let-me-in"
-      - "POSTGRES_DB=mydb"
-    params:
-      storage:
-        data:
-          mount: /var/lib/postgresql/data
-          readOnly: false
-profiles:
-  compute:
-    postgres:
-      resources:
-        cpu:
-          units: 4.0
-        memory:
-          size: 8Gi
-        storage:
-          - size: 20Gi
-          - name: data
-            size: 20Gi
-            attributes:
-              persistent: true
-              class: beta3
-  placement:
-    akash:
-      attributes:
-        host: akash
-      signedBy:
-        anyOf:
-          - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
-      pricing:
-        postgres:
-          denom: uakt
-          amount: 10000
-deployment:
-  postgres:
-    akash:
-      profile: postgres
-      count: 1
-```
-
-Adjust the CPU, HDD, and other settings according to your needs.
-
-After deployment, add the login to the `.env` file:
-
-```bash
-POSTGRES_URL=postgresql://eliza:yourpassword@provider.akash.ddns.net:yourportassigned/eliza_db
-```
-
-Use `pgadmin4` to access and backup the database via web browser.
-
-## Run a Dedicated AKASH Engine
-
-For temporary use, consider running a dedicated AKASH engine.
-
-
-Llama 3.1 70B 1.65$ per hour ((2x A100) ----------
-LLama 3.1 405B 8$ per hour   (8x A100)
-
-Use this YAML to deploy:
-
-
-## Cosmos Transaction Module
-
-For now, it only supports tx bank transfers. With SKIP API, it will be able to IBC, trade, and stake tokens.
-
-- [Discord](https://discord.gg/ai16z). Best for: sharing your applications and hanging out with the community.
 
 ## Contributors
 
