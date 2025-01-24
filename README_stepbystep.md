@@ -80,7 +80,7 @@ If you work on a remote server, you might use the built in code editor to popula
 You can use different supported API's 
 
 According to your favoured API provider, set the "modelProvider" in your character file to one of the following options:
-
+```
 "openai"
 "anthropic"
 "akash_chat_api"
@@ -93,6 +93,7 @@ According to your favoured API provider, set the "modelProvider" in your charact
 "OLLAMA"
 "GOOGLE"
 "LLAMALOCAL"
+```
 
 1. Edit the `.env` file to add your API key:
 
@@ -126,7 +127,7 @@ Insert your API KEY into the according line
 
 3. Set the attribute "modelProvider" to use one of the following API Endpoints you have added to your .env file
 
-   ```json
+```json
 "openai"
 "anthropic"
 "akash_chat_api"
@@ -138,9 +139,8 @@ Insert your API KEY into the according line
 "TOGETHER"
 "OLLAMA"
 "GOOGLE"
-"LLAMALOCAL"
-   
-   ```
+"LLAMALOCAL"  
+```
 
 2. If you want to run your framework on a remote server, you might want to keep the instance running after logout.
    So use `pm2`:
@@ -156,11 +156,13 @@ Insert your API KEY into the according line
    ```
 
    - **PM2 Commands:**
+     ```
      - `pm2 start eliza`
      - `pm2 stop eliza`
      - `pm2 log`
      - `pm2 status`
      - `pm2 save`
+     ```
 
 
 
@@ -170,7 +172,7 @@ Start the framework
 
 ```bash
 pnpm start --characters="./eliza/characters/avatar.character.json"
-```bash
+```
 
 And open a new window and run:
 
@@ -214,6 +216,10 @@ replace with your own tokens:
 3. Use the invite link from startup to add the bot to your server.
 4. Set bot permission intentions to the right.
 5. Enter your Application ID and API Token as shown.
+
+      ```json
+   "clients": ["telegram","discord"],
+   ```
 
 ## Advanced Character Settings
 
