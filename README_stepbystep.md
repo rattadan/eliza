@@ -42,6 +42,7 @@ This guide is designed to help communities run their own bots effortlessly.
 git clone https://github.com/elizaos/eliza.git
 ```
 
+
 ### First Build Initialization
 
 1. Install dependencies and build:
@@ -51,24 +52,6 @@ git clone https://github.com/elizaos/eliza.git
    pnpm build
       ```
 
-2. To keep the instance running after logout, use `pm2`:
-
-   ```bash
-   npm install pm2
-   ```
-
-3. Start the process with `pm2`:
-
-   ```bash
-   pm2 start pnpm --name eliza -- start -- --character=./eliza/characters/avatar.character.json
-   ```
-
-   - **PM2 Commands:**
-     - `pm2 start eliza`
-     - `pm2 stop eliza`
-     - `pm2 log`
-     - `pm2 status`
-     - `pm2 save`
 
 
 ### Edit the `.env` File
@@ -87,14 +70,29 @@ Best to use is VS Code, but you can also use any text-based editor or even the c
    ```bash
    nano .env
    ```
-
+If you work on a remote server, you might use the built in code editor to populate your environment file
    - **Nano Commands:**
      - `CTRL+X`: Save and Exit
      - `CTRL+W`: Search
 
 ### Obtain  API Key
 
+You can use different supported API's 
 
+According to your favoured API provider, set the "modelProvider" in your character file to one of the following options:
+
+"openai"
+"anthropic"
+"akash_chat_api"
+"eternalai"
+"groq"
+"ALI_BAILIAN"
+"VOLENGINE"
+"LLAMACLOUD"
+"TOGETHER"
+"OLLAMA"
+"GOOGLE"
+"LLAMALOCAL"
 
 1. Edit the `.env` file to add your API key:
 
@@ -122,13 +120,47 @@ Insert your API KEY into the according line
    - **Structure:**
      - **Bio:** Self-definition for the LLM
      - **Lore:** Text style examples
-     - **Knowledge:** Initial memories (e.g., website, Discord URL)
+     - **Knowledge:** Initial memories (if you want your bot to know facts about your project, add it here.. e.g., website, Discord URL)
+    
+    You can start with a small character file first, you can append more lines later easily to grow your agents personality
 
-3. Set the attribute "modelProvider" to use the AKASH Chat API :
+3. Set the attribute "modelProvider" to use one of the following API Endpoints you have added to your .env file
 
    ```json
-   "modelProvider": "akash_chat_api",
+"openai"
+"anthropic"
+"akash_chat_api"
+"eternalai"
+"groq"
+"ALI_BAILIAN"
+"VOLENGINE"
+"LLAMACLOUD"
+"TOGETHER"
+"OLLAMA"
+"GOOGLE"
+"LLAMALOCAL"
+   
    ```
+
+2. If you want to run your framework on a remote server, you might want to keep the instance running after logout.
+   So use `pm2`:
+
+   ```bash
+   npm install pm2
+   ```
+
+4. Start the process with `pm2`:
+
+   ```bash
+   pm2 start pnpm --name eliza -- start -- --character=./eliza/characters/avatar.character.json
+   ```
+
+   - **PM2 Commands:**
+     - `pm2 start eliza`
+     - `pm2 stop eliza`
+     - `pm2 log`
+     - `pm2 status`
+     - `pm2 save`
 
 
 
@@ -147,12 +179,27 @@ pnpm start:client
 ```
 
 Visit the displayed website on your localhost using a web browser.
+This is the main interaction interface that supports chat, file upload (images, PDF) and the easiest way for troubleshooting your characters behaviour
+
+To handle multiple character the same times, a good option is to add the following credential directly into the character file, not the .env file:
+replace with your own tokens:
+ ```json
+   "settings": {
+        "secrets": {
+                "TELEGRAM_BOT_TOKEN": "773XXXXXXXXXXXXXXXXXXXXXXXTj7M",
+                "DISCORD_APPLICATION_ID": "133XXXXXXXXXXXXXX936",
+                "DISCORD_API_TOKEN": "MTMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXNjQ"
+         },
+ ```
 
 ### Telegram Connection
 
 1. Use [BotFather](https://telegram.me/BotFather) to create a bot.
-2. Add your bot token to the `.env` file.
-3. Update your character file header:
+2. 
+3. Either Add your bot token to the `.env` file OR
+4. Add your bot token into the characters header file:
+
+5. Update your character file header:
 
    ```json
    "clients": ["telegram"],
@@ -163,30 +210,49 @@ Visit the displayed website on your localhost using a web browser.
 ### Discord Connection
 
 1. Create a bot token at [Discord Developers](https://discord.com/developers).
-2. Reset your token if necessary.
+2. Reset your token to show the Discord API Token (it contains not just numbers, it contains alphanumericals too.
 3. Use the invite link from startup to add the bot to your server.
 4. Set bot permission intentions to the right.
 5. Enter your Application ID and API Token as shown.
 
 ## Advanced Character Settings
 
+Actually you can use the character to file to adjust your agents behaviour in responding as you wish
+Feel free to play with different characters, to get ready for the next lesson, the Tag Team feature!
 Example:
+Take this as an easy example:
 
 ```json
 {
-  "name": "Bud",
-  "plugins": ["web-search"],
-  "clients": ["discord"],
-  "modelProvider": "akash_chat_api",
-  "settings": {
-    "secrets": {
-      "DISCORD_APPLICATION_ID": "123456789",
-      "DISCORD_API_TOKEN": "MTMzMDEzMzE4NXXXXXXXXXXXXXXXK3zQp577QWKjS4i-wz78"
+    "name": "Bud",
+    "plugins": [],
+    "clients": ["discord","telegram","twitter"],
+    "modelProvider": "akash_chat_api",
+    "settings": {
+        "secrets": {
+            "TELEGRAM_BOT_TOKEN": "799XXXXXXXXXXXXXXXXXXXXXXXXXXXHGQk",
+            "DISCORD_APPLICATION_ID": "133XXXXXXXXXXXXXXXXXXX24",
+            "DISCORD_API_TOKEN": "MTMzXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXAfZI"
+        },
+        "voice": {
+            "model": "en_US-male-heavy"
+        }
     },
-    "voice": {
-      "model": "en_US-male-medium"
-    }
-  },
+       "clientConfig": {
+        "shouldRespondOnlyToMentions": false,
+        "discord": {
+            "shouldRespondOnlyToMentions": false,
+            "shouldIgnoreBotMessages": false,
+            "shouldIgnoreDirectMessages": false,
+            "responseChance": 1
+        },
+        "telegram": {
+            "shouldRespondOnlyToMentions": false,
+            "shouldIgnoreBotMessages": false,
+            "shouldIgnoreDirectMessages": false,
+            "responseChance": 0.8
+        }
+    },
 ```
 
 - **Secrets:** Override values in `.env` for a specific character.
